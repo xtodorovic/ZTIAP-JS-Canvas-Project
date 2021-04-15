@@ -307,13 +307,6 @@ function GameOver(){
     // TO DO : add play again button
 }
 
-setInterval(function(){
-    for(i = 0; i < enemies.length; i++)
-    {
-        enemies[i].direction(); 
-    }  
-      
-}, 1000);
 
 function collisionCheck(a, b) {
     return a.x < b.x + b.width &&
