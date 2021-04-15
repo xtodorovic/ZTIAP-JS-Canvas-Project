@@ -69,6 +69,5 @@ setInterval(function(){
     for(i = 0; i < enemies.length; i++)
     {
         enemies[i].direction(); 
-    }  
-      
+    }    
 }, 1000);
