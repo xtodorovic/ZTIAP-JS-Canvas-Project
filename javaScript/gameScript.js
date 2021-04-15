@@ -88,6 +88,23 @@ pausedScreen.src = "resources/main_menu/pause.png";
 musicOn.src = "resources/main_menu/musicOn.png";
 musicOff.src = "resources/main_menu/musicOff.png";
 
+
+window.onload = function loadGame() {
+
+    if (!start) {
+        mainMenuMusic = new sound("sounds/mainMenu/mMenu.mp3");
+        mainMenuMusic.play();
+        canvas = document.getElementById("myCanvas");
+        ctx = canvas.getContext("2d");
+        canvas.addEventListener('keydown', onKeyDown);
+        canvas.addEventListener('keyup', onKeyUp);
+        canvas.addEventListener("mousemove", checkPos);
+        canvas.addEventListener("mouseup", checkClick);
+      
+        GameArea.start();
+    }
+}
+
 function updateMainMenu() {
     clearMenu();
     drawMenu();
@@ -129,15 +146,6 @@ function drawMenu(){
             ctx.drawImage(selectImg, selectX[1] - (selectSize/2), selectY[1], selectSize, selectHeight);
         }
     }
-}
-// keydown functions
-function onKeyDown(event) {
-    keyState[event.keyCode] = true;
-    console.log(event.keyCode);
-}
-
-function onKeyUp(event) {
-    keyState[event.keyCode] = false;
 }
 
 function checkPos(mouseEvent){
@@ -256,21 +264,7 @@ function QuitGame(){
     /////TO DO : quit screen
 }
 
-window.onload = function loadGame() {
 
-    if (!start) {
-        mainMenuMusic = new sound("sounds/mainMenu/mMenu.mp3");
-        mainMenuMusic.play();
-        canvas = document.getElementById("myCanvas");
-        ctx = canvas.getContext("2d");
-        canvas.addEventListener('keydown', onKeyDown);
-        canvas.addEventListener('keyup', onKeyUp);
-        canvas.addEventListener("mousemove", checkPos);
-        canvas.addEventListener("mouseup", checkClick);
-      
-        GameArea.start();
-    }
-}
 function startGame() {
     start = true;
     GameArea.start();
@@ -305,49 +299,6 @@ function GameOver(){
     canvas.removeEventListener("keydown", onKeyDown);
     canvas.removeEventListener("keyup", onKeyUp);
     // TO DO : add play again button
-}
-
-
-document.onkeydown = function(e){
-    if(e.keyCode == keyUp || e.keyCode == keyUpArrow){
-        tank.speedY = -5;
-        tank.speedX = 0;
-        tank.angle = 1;
-    }
-    if(e.keyCode == keyDown || e.keyCode == keyDownArrow){
-        tank.speedY = 5;
-        tank.speedX = 0;
-        tank.angle = 3;
-    }
-    if(e.keyCode == keyLeft || e.keyCode == keyLeftArrow){
-        tank.speedX = -5;
-        tank.speedY = 0;
-        tank.angle = 4;
-    }
-    if(e.keyCode == keyRight || e.keyCode == keyRightArrow){
-        tank.speedX = 5;
-        tank.speedY = 0;
-        tank.angle = 2;
-    }
-    if(e.keyCode == keyShoot){
-        tank.fireRate = 1;
-    }
-    if(e.keyCode == keyPause || e.keyCode == keyEscape){
-        if (!paused)
-        {
-            canvas.addEventListener("mousemove", checkPos);
-            canvas.addEventListener("mouseup", checkClick);
-            paused = true;
-        } else if (paused)
-        {
-            paused = false;
-            pausedOnce = 0;
-        }
-    }
-}
-document.onkeyup = function(){
-    tank.speedX = 0; 
-    tank.speedY = 0; 
 }
 
 function shoot() {
