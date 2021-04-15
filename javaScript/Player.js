@@ -38,4 +38,13 @@ function Player(width, height, x, y) {
             this.y = newy;
         }
     }
+    this.shoot = function() {
+
+        bullets.push(new Bullet({
+            x: this.x + this.width/2,
+            y: this.y,
+            angle: this.angle
+        }));
+           
+    }
 }

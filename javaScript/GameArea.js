@@ -47,6 +47,13 @@ function updateGameArea() {
                     GameOver();
                 }
             }
+            bullets.forEach(function(bullet) {
+                bullet.update();
+              });
+            
+              bullets.forEach(function(bullet) {
+                bullet.draw();
+              });
         }
         else{
             GameArea.pause();

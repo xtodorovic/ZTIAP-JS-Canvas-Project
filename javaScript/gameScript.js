@@ -7,6 +7,7 @@ var tank;
 var gameAreaWidth = 800;
 var gameAreaHeight = 600;
 var enemies = [];
+var bullets = [];
 
 var start = false;
 var paused = false;

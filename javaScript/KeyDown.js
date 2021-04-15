@@ -30,7 +30,7 @@ document.onkeydown = function(e){
         tank.angle = 2;
     }
     if(e.keyCode == keyShoot){
-        tank.fireRate = 1;
+        tank.shoot();
     }
     if(e.keyCode == keyPause || e.keyCode == keyEscape){
         if (!paused)
