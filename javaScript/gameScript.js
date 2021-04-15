@@ -315,33 +315,6 @@ function collisionCheck(a, b) {
            a.y + a.height > b.y;
   }
 
-function updateGameArea() {
-    if(!start){
-        updateMainMenu();
-    }
-    else{
-        if(!paused)
-        {
-            GameArea.clear();
-            tank.newPos();
-            tank.draw();
-            for(i=0; i < 5; i++)
-            {
-                enemies[i].newPos();
-                enemies[i].draw();
-                if (collisionCheck(enemies[i], tank)) {
-                    GameOver();
-                }
-            }
-        }
-        else{
-            GameArea.pause();
-            pausedOnce = 1;
-        }
-    }
-    
-}
-
 document.onkeydown = function(e){
     if(e.keyCode == keyUp || e.keyCode == keyUpArrow){
         tank.speedY = -5;

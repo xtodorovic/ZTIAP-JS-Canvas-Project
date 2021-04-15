@@ -19,19 +19,6 @@ var GameArea = {
         clearInterval(this.interval);        
     },
     pause : function() {
-       /* if(pausedOnce == 0)
-        {
-            this.context.fillStyle = 'White';
-            this.context.globalAlpha = 0.2;
-            this.context.fillRect(50,50, this.canvas.width-100, this.canvas.height-100);
-            this.context.globalAlpha = 1.0;
-            this.context.font = "bold 28px Arial";
-            this.context.fillStyle = "Black";
-            this.context.fillText("PAUSED", this.canvas.width/2 - 70, 115);
-            this.context.font = "25px Arial";
-            this.context.fillText("PRESS 'P' TO CONTINUE.", this.canvas.width/2 - 155, this.canvas.height/2+100);
-           // this.context.drawImage(quitImg, )
-        }*/
         this.context.drawImage(pausedScreen, 0 , 0);
         if(!selectQuit)
         {
@@ -40,4 +27,31 @@ var GameArea = {
             this.context.drawImage(quitBtnSelect,buttonX[4] , buttonY[4], buttonWidth[4], buttonHeight[4]); 
         }
     }
+}
+
+function updateGameArea() {
+    if(!start){
+        updateMainMenu();
+    }
+    else{
+        if(!paused)
+        {
+            GameArea.clear();
+            tank.newPos();
+            tank.draw();
+            for(i=0; i < 5; i++)
+            {
+                enemies[i].newPos();
+                enemies[i].draw();
+                if (collisionCheck(enemies[i], tank)) {
+                    GameOver();
+                }
+            }
+        }
+        else{
+            GameArea.pause();
+            pausedOnce = 1;
+        }
+    }
+    
 }
