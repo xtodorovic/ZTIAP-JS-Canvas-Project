@@ -2,8 +2,8 @@
 // Bullet Class
 function Bullet(bullet) {
     this.active = true;
-    this.color = "yellow";
-    this.speed = 7;
+    this.color = bullet.color;
+    this.speed = bullet.speed;
     this.width = 4;
     this.height = 8;
     this.x = bullet.x;
@@ -16,7 +16,8 @@ function Bullet(bullet) {
     }
     this.draw = function(){
         ctx.fillStyle = this.color;
-        switch(this.angle){
+        if(this.active){
+            switch(this.angle){
             case 1: ctx.fillRect(this.x, this.y, this.width, this.height);
                 break;
             case 2: ctx.fillRect(this.x +tank.height/2, this.y+tank.width/2, this.height, this.width );
@@ -27,6 +28,8 @@ function Bullet(bullet) {
                 break;
             default: break;
         }
+        }
+        
         
     }
     this.update = function() {
@@ -48,10 +51,4 @@ function Bullet(bullet) {
     }
   }
 
-  bullets.forEach(function(bullet) {
-    bullet.update();
-  });
-
-  bullets.forEach(function(bullet) {
-    bullet.draw();
-  });
+  

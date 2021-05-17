@@ -11,13 +11,21 @@
             body{
                 background-color: #1c1f22;
             }
-            #canvas-container{
-                width: 100%;
+            #wrapper{
                 text-align: center;
             }
+            #canvas-container{
+                display: inline-block;
+            }
+            #info-container{
+                display: inline-block;
+                background-color: black;
+            }
             #myCanvas{
-                display: inline;
                 border: 3px solid #000000;
+            }
+            #infoCanvas{
+                border: 2px solid #000000;
             }
         </style>
         <link rel="icon"                     
@@ -30,16 +38,27 @@
         <script src="javaScript/Bullet.js"></script>
         <script src="javaScript/KeyDown.js"></script>
         <script src="javaScript/MouseClick.js"></script>
-
-        
+        <script src="javaScript/BrickBlock.js"></script>
+        <script src="javaScript/PlayerBase.js"></script>
+        <script src="javaScript/Collison.js"></script>
     </head>
+
     
 <body>
-    <div id="canvas-container">
-       <canvas id="myCanvas" width="800" height="600">
-        Your browser does not support the HTML canvas tag.
-        </canvas> 
+    <div id="wrapper">
+        <div id="canvas-container">
+        <canvas id="myCanvas" width="800" height="600">
+            Your browser does not support the HTML canvas tag.
+            </canvas>
+        </div>
+        <div id="info-container">
+            <canvas id="infoCanvas" width="300" height="600">
+                Your browser does not support the HTML canvas tag.
+                </canvas> 
+        </div> 
     </div>
+    
+        
     
     <img id="background" src="resources/background/background1.jpg" alt="Background" width="0" height="0">
     <img id="tank1" src="resources/tank/tank1.jpg" alt="TANK UP" width="0" height="0">

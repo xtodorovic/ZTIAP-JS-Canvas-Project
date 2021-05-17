@@ -1,6 +1,8 @@
 
 var canvas;
 var ctx;
+var infoCanvas;
+var infoCtx;
 //   var width = canvas.getAttribute('width');
 //   var height = canvas.getAttribute('height');
 var tank;
@@ -8,12 +10,16 @@ var gameAreaWidth = 800;
 var gameAreaHeight = 600;
 var enemies = [];
 var bullets = [];
+var enemyBullets = [];
+
+// Blocks
+var brickBlocks = [];
 
 var start = false;
 var paused = false;
 var pausedOnce = 0;
 var instructions = false;
-
+var gameoverScreen = false;
     // input setup
 //  var keyState = []; 
 //  keyState.length = 256;
@@ -27,6 +33,7 @@ var selectHeight = 40;
  
 var selectVisible = false;
 var selectBack = false;
+var selectPlayAgain = false;
 var selectQuit = false;
 var selectSize = selectWidth;
 var selectRotate = 0;
@@ -39,10 +46,10 @@ var time = 0.0;
 var music = true;
 
 var pressed = 0;
-var buttonX = [570, 570, 645, 10, 225];
-var buttonY = [100, 150, 200, 10, 500];
-var buttonWidth = [200, 200, 50, 35, 350];
-var buttonHeight = [30, 25, 50, 35, 30];
+var buttonX = [570, 570, 645, 10, 225, 250];
+var buttonY = [100, 150, 200, 10, 500, 450];
+var buttonWidth = [200, 200, 50, 35, 350, 250 ];
+var buttonHeight = [30, 25, 50, 35, 30, 30];
 
 // key setup
 var keyUp = 87;
@@ -73,6 +80,8 @@ var quitBtn = new Image();
 var pausedScreen = new Image();
 var musicOn = new Image();
 var musicOff = new Image();
+var playAgain = new Image();
+var playAgainSelect = new Image();
 menuImg.src = "resources/main_menu/mmenu1.png";
 backgroundImg.src = "resources/background/background1.jpg";
 titleImg.src = "resources/main_menu/gameTitle.png"
@@ -88,6 +97,33 @@ quitBtn.src = "resources/main_menu/quit.png";
 pausedScreen.src = "resources/main_menu/pause.png";
 musicOn.src = "resources/main_menu/musicOn.png";
 musicOff.src = "resources/main_menu/musicOff.png";
+playAgain.src = "resources/main_menu/playAgain.png";
+playAgainSelect.src = "resources/main_menu/playAgainSelect.png";
+
+//Explosion Array
+var explosionArray = new Array();
+explosionArray[0] = new Image();
+explosionArray[1] = new Image();
+explosionArray[2] = new Image();
+explosionArray[3] = new Image();
+explosionArray[4] = new Image();
+explosionArray[5] = new Image();
+explosionArray[6] = new Image();
+explosionArray[7] = new Image();
+explosionArray[8] = new Image();
+explosionArray[9] = new Image();
+
+explosionArray[0].src = "resources/boom/explode1.png";
+explosionArray[1].src = "resources/boom/explode2.png";
+explosionArray[2].src = "resources/boom/explode3.png";
+explosionArray[3].src = "resources/boom/explode4.png";
+explosionArray[4].src = "resources/boom/explode5.png";
+explosionArray[5].src = "resources/boom/explode6.png";
+explosionArray[6].src = "resources/boom/explode7.png";
+explosionArray[7].src = "resources/boom/explode8.png";
+explosionArray[8].src = "resources/boom/explode9.png";
+explosionArray[9].src = "resources/boom/explode10.png";
+
 
 
 window.onload = function loadGame() {
@@ -97,11 +133,11 @@ window.onload = function loadGame() {
         mainMenuMusic.play();
         canvas = document.getElementById("myCanvas");
         ctx = canvas.getContext("2d");
-        canvas.addEventListener('keydown', onKeyDown);
-        canvas.addEventListener('keyup', onKeyUp);
+        infoCanvas = document.getElementById("infoCanvas");
+        infoCtx = infoCanvas.getContext("2d");
         canvas.addEventListener("mousemove", checkPos);
         canvas.addEventListener("mouseup", checkClick);
-      
+        
         GameArea.start();
     }
 }
@@ -149,40 +185,41 @@ function drawMenu(){
     }
 }
 
-function fadeOut(){
-    ctx.fillStyle = "rgba(0,0,0, 0.2)";
-    ctx.fillRect (0, 0, gameAreaWidth, gameAreaHeight);
-    time += 0.1;
-    if(time >= 2){
-        clearInterval(fadeId);
-    }
-}
 function QuitGame(){
     paused = false;
+    pausedOnce = 0;
     start = false;
-    GameArea.stop();
-    inGameMusic.stop();
-    clearMenu();
-    canvas.removeEventListener("mousemove", checkPos);
-    canvas.removeEventListener("mouseup", checkClick);
+    gameoverScreen = false;
+    gameover = false;
+    GameArea.clear();
+    level = 0;
+    nextlevel = true;
+    infoCtx.clearRect(0, 0, infoCanvas.width, infoCanvas.height);
+    infoCtx.fillStyle = 'Black';
+    infoCtx.fillRect(0,0, infoCanvas.width, infoCanvas.height);
     canvas.removeEventListener("keydown", onKeyDown);
     canvas.removeEventListener("keyup", onKeyUp);
-    selectVisible = false;
-    selectBack = false;
-    selectQuit = false;
-    /////TO DO : quit screen
+    enemies.forEach(function(enemy){
+        enemy.die();
+    });
+    
+    enemyBullets.forEach(function(bullet){
+        bullet.die();
+    });
+
+    bullets.forEach(function(bullet){
+        bullet.die();
+    });  
 }
 
 
 function startGame() {
     start = true;
     GameArea.start();
-    tank = new Player(50, 50, gameAreaWidth/2-25, gameAreaHeight/2-25);
-    for(i=0; i< 5; i++)
-    {
-        enemies[i] = new enemy(50,50, 50, 50, 1);
-    }
-    
+    canvas.addEventListener('keydown', onKeyDown);
+    canvas.addEventListener('keyup', onKeyUp);
+    tank = new Player(50, 50, 600, 500);
+    level = 1;
     mainMenuMusic.stop();
     if(music){
         inGameMusic = new sound("sounds/inGame/ingame.wav");
@@ -190,32 +227,14 @@ function startGame() {
     }
     
 }
-
+/*
 function GameOver(){
-    GameArea.stop();
-    inGameMusic.stop();
-    ctx.fillStyle = 'White';
-    ctx.globalAlpha = 0.2;
-    ctx.fillRect(50,50, this.canvas.width-100, this.canvas.height-100);
-    ctx.globalAlpha = 1.0;
-    ctx.font = "bold 28px Arial";
-    ctx.fillStyle = "Black";
-    ctx.fillText("GAME OVER", this.canvas.width/2 - 70, 115);
-    ctx.font = "25px Arial";
-    ctx.fillText("YOUR TANK GOT DESTROYED", this.canvas.width/2 - 155, this.canvas.height/2+100);
+    
     canvas.removeEventListener("mousemove", checkPos);
     canvas.removeEventListener("mouseup", checkClick);
     canvas.removeEventListener("keydown", onKeyDown);
     canvas.removeEventListener("keyup", onKeyUp);
-    // TO DO : add play again button
-}
-
-function shoot() {
-    tank.fireRate = 1;
-}
-function dontshoot() {
-    tank.fireRate = 0;
-}
+}*/
 
 function sound(src) {
     this.sound = document.createElement("audio");

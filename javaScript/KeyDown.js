@@ -9,29 +9,44 @@ function onKeyUp(event) {
 }
 
 document.onkeydown = function(e){
-    if(e.keyCode == keyUp || e.keyCode == keyUpArrow){
-        tank.speedY = -5;
-        tank.speedX = 0;
-        tank.angle = 1;
+    if(stop1 != true){
+        if(e.keyCode == keyUp || e.keyCode == keyUpArrow){
+            tank.speedY = -5;
+            tank.speedX = 0;
+            tank.angle = 1;
+            stop4 = false;
+        }
     }
-    if(e.keyCode == keyDown || e.keyCode == keyDownArrow){
-        tank.speedY = 5;
-        tank.speedX = 0;
-        tank.angle = 3;
+    if(stop2 != true){
+        if(e.keyCode == keyDown || e.keyCode == keyDownArrow){
+            tank.speedY = 5;
+            tank.speedX = 0;
+            tank.angle = 3;
+            stop3 = false;
+        }
     }
-    if(e.keyCode == keyLeft || e.keyCode == keyLeftArrow){
-        tank.speedX = -5;
-        tank.speedY = 0;
-        tank.angle = 4;
+    if(stop3 != true){
+        if(e.keyCode == keyLeft || e.keyCode == keyLeftArrow){
+            tank.speedX = -5;
+            tank.speedY = 0;
+            tank.angle = 4;
+            stop1 = false;
+        }
     }
-    if(e.keyCode == keyRight || e.keyCode == keyRightArrow){
-        tank.speedX = 5;
-        tank.speedY = 0;
-        tank.angle = 2;
+    if(stop4 != true){
+        if(e.keyCode == keyRight || e.keyCode == keyRightArrow){
+            tank.speedX = 5;
+            tank.speedY = 0;
+            tank.angle = 2;
+            stop2 = false;
+        }
     }
     if(e.keyCode == keyShoot){
         tank.shoot();
     }
+    if(e.keyCode == keyShoot && e.target == document.body) {
+        e.preventDefault();
+      }
     if(e.keyCode == keyPause || e.keyCode == keyEscape){
         if (!paused)
         {

@@ -1,5 +1,7 @@
 
 function Player(width, height, x, y) {
+    this.lives = 3;
+    this.score = 0;
     this.width = width;
     this.height = height;
     this.fireRate = 0;
@@ -39,12 +41,31 @@ function Player(width, height, x, y) {
         }
     }
     this.shoot = function() {
-
         bullets.push(new Bullet({
             x: this.x + this.width/2,
             y: this.y,
-            angle: this.angle
-        }));
-           
+            angle: this.angle,
+            speed: 7,
+            color: "yellow"
+        }));   
+    }
+    this.die = function(){
+        this.lives--;
+       /* for(i = 0; i<10; i++)
+        {
+            ctx.drawImage(explosionArray[i], this.x, this.y, this.width, this.height);
+        }*/
+        if(this.lives > 0){
+            this.x = 600;
+            this.y = 500;
+        }
+        else if(this.lives == 0){
+            level = 0;
+        }
     }
 }
+
+function collisionBlockCheck(a, b) {
+    return a < b.x + b.width &&
+           a+50 > b.x;
+  }

@@ -1,6 +1,13 @@
+var enemyCount=0;
+var enemyMax;
+var spawnX = 15;
+var shootInterval = 1000;
+var spawnInterval = 5000;
+var enemyTotal=0;
 
 function enemy(width, height, x, y, type)
 {
+    this.active = true;
     this.width = width;
     this.height = height;
     this.speedX = 0;
@@ -48,6 +55,10 @@ function enemy(width, height, x, y, type)
                 this.speedY = 0;
             }
     }
+    this.stop = function() {
+        this.speedY = 0;
+        this.speedX = 0;
+    }
     this.newPos = function() {
         // movements
         
@@ -63,11 +74,53 @@ function enemy(width, height, x, y, type)
             this.y = newy;
         }
     }
+    this.shoot = function() {
+
+        enemyBullets.push(new Bullet({
+                x: this.x + this.width/2,
+                y: this.y,
+                angle: this.angle,
+                speed: 5,
+                color: "black"
+            }));   
+    }
+    this.die = function() {
+        
+        this.active = false;
+        
+    }
 }
 
 setInterval(function(){
-    for(i = 0; i < enemies.length; i++)
-    {
-        enemies[i].direction(); 
-    }    
+    if(!paused){
+       enemies.forEach(function(enemy) {
+        enemy.direction();
+    });   
+    }
 }, 1000);
+
+setInterval(function(){
+    if(!paused && start)
+    {
+       enemies.forEach(function(enemy) {
+        enemy.shoot();
+    });    
+    }
+}, shootInterval);
+
+setInterval(function(){
+    if(level != 0 && !paused && start){
+        if(enemyCount<=enemyMax){
+            for(i=0; i<3; i++)
+            {
+                enemies.push(new enemy(50, 50, spawnX, 0, 1));
+                spawnX+= 260;
+                if(spawnX > gameAreaWidth){
+                    spawnX = 15;
+                }
+            }
+            enemyCount += 3;
+            enemyTotal += 3;
+        }
+    }   
+}, spawnInterval);

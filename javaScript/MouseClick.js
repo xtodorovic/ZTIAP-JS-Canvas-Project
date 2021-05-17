@@ -36,7 +36,7 @@ function checkPos(mouseEvent){
             }
         } 
     }
-    if(paused == true)
+    if(paused == true || gameoverScreen == true)
     {
         if(mouseX > buttonX[4] && mouseX < buttonX[4] + buttonWidth[4]){
             if(mouseY > buttonY[4] && mouseY < buttonY[4] + buttonHeight[4]){
@@ -45,6 +45,14 @@ function checkPos(mouseEvent){
         }
         else{
             selectQuit = false;
+        }
+        if(mouseX > buttonX[5] && mouseX < buttonX[5] + buttonWidth[5]){
+            if(mouseY > buttonY[5] && mouseY < buttonY[5] + buttonHeight[5]){
+                selectPlayAgain = true;
+            }
+        }
+        else{
+            selectPlayAgain = false;
         }
     }
 }
@@ -80,10 +88,18 @@ function checkClick(mouseEvent){
                         instructions = false;
                     }
                 }
-                if(paused == true)
+                if(paused == true || gameoverScreen == true)
                 {
-                    if(mouseY > buttonY[3] && mouseY < buttonY[3] + buttonHeight[3]){
+                    if(mouseY > buttonY[4] && mouseY < buttonY[4] + buttonHeight[4]){
+                        //startGame();
                         QuitGame();
+                       // console.log("Click");
+                    }
+                    if(mouseY > buttonY[5] && mouseY < buttonY[5] + buttonHeight[5]){
+                        //startGame();
+                        QuitGame();
+                        startGame();
+                       // console.log("Click");
                     }
                 }
             }
