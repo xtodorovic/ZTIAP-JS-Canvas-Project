@@ -1,5 +1,5 @@
 Probably the most tricky part was the collision.
-Since I was trying to do all the graphics by myself, I didn't finish most of them,but the intro screen is looks cool.
+Since I was trying to do all the graphics by myself, I didn't finish most of them,but the intro screen looks cool.
 
 There are still bugs that need to be solved, but the game is playable for the most part.
 
